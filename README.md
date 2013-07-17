@@ -4,15 +4,15 @@ Ice-breaker
 WebRTC enabled HTML5 App for real-time collaboration
 
 Supports:
-Video Chat
+* Video Chat
 
 Upcoming:
-*File Sharing
-*Screen-Sharing
-*Audio only calls
-*Video calls recording and tagging
-*ISS - Immediate Screenshots sharing 
-**(Windows only - requires pressing Print-screen, and then pressing Ctrl + V in the app) 
+* File Sharing
+* Screen-Sharing
+* Audio only calls
+* Video calls recording and tagging
+* ISS - Immediate Screenshots sharing 
+** (Windows only - requires pressing Print-screen, and then pressing Ctrl + V in the app) 
 
 Briefly:
 
