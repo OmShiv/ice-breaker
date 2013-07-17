@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>ICE-Breaker | WebRTC Based Conferencing</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+
+  <link rel="stylesheet" href="css/normalize.min.css">
+  <link rel="stylesheet" href="css/main.css">
+
+  <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+  <script>
+    var room = "#{ params.room }";
+    var initCall = "#{ room_count > 0 }";
+  </script>
+</head>
+<body>
+
+  <div id="viewport">
+    <header id="ice-header">
+      <div class="circles people">
+        <a href="#" class="speaker-1" ></a>
+        <a href="#" class="speaker-2" ></a>
+      </div>
+      <div class="meet-info">
+        <div id="com-title">APJ Sales team meeting</div>
+        <div id="com-sharer">Sharer's Desktop</div>
+      </div>
+      <div class="circles action top">
+        <a href="#call-phone" class="call-phone"></a>
+        <a href="#share-screen" class="share-screen" ></a>
+        <a href="#web-cam" class="web-cam"></a>
+        <a href="#share-folder" class="share-folder"></a>
+      </div>
+
+    </header>
+    <section id="main">
+
+      <video id="main-video"></video>
+      <div class="circles action main">
+        <a href="#mic" class="mic"></a>
+        <a href="#tag" class="tag"></a>
+        <a href="#record" class="record"></a>
+        <a href="#disconnect" class="disconnect"></a>
+      </div>
+
+      <video id="overlay-video"></video>
+
+      <!-- Pre-Video controls -->
+      <div class="c2a">
+        <a id="c2a-toggle" href="#c2a"></a>
+        <form>
+          <label>Call to Action</label>
+          <div>
+            <input id="member-name" placeholder="Members Name" />
+          </div>
+          <div>
+            <textarea id="member-notes" placeholder="Call to action notes" cols="35"></textarea>
+          </div>
+        </form>
+        <div class="separator">
+          <button id="add-action"></button>
+        </div>
+        <div class="action-item">
+          <div class="name">Some one</div>
+          <div class="action">HTML5 is really awesome! Did you check on that?</div>
+        </div>
+        <div class="separator"> </div>
+      </div>
+
+    </section>
+  </div>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
+
+  <script src="js/plugins.js"></script>
+  <script src="js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+!!! 5
+html.no-js
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+    title ICE-Breaker | WebRTC Based Conferencing
+    meta(name='description', content='')
+    meta(name='viewport', content='width=device-width')
+    link(rel='stylesheet', href='css/normalize.min.css')
+    link(rel='stylesheet', href='css/main.css')
+    script(src='js/vendor/modernizr-2.6.2.min.js')
+    script.(type='text/javascript')
+      var room = "#{ params.room }";
+      var initCall = #{ room_count > 0 };
+  body
+    #viewport
+      header#ice-header
+        a#hdr-toggle(href='#hdr')
+        .circles.people
+          a.speaker-1(href='#')
+          a.speaker-2(href='#')
+        .meet-info
+          #com-title APJ Sales team meeting
+          #com-sharer Sharer's Desktop
+        .circles.action.top
+          a.call-phone(href='#call-phone')
+          a.share-screen(href='#share-screen')
+          a.web-cam(href='#web-cam')
+          a.share-folder(href='#share-folder')
+      section#main
+        video#main-video
+        .circles.action.main
+          a.mic(href='#mic')
+          a.tag(href='#tag')
+          a.record(href='#record')
+          a.disconnect(href='#disconnect')
+        video#overlay-video
+        .c2a
+          a#c2a-toggle(href='#c2a')
+          form#c2a-form
+            label Call to Action
+            div
+              input#member-name(placeholder='Members Name')
+            div
+              textarea#member-notes(placeholder='Call to action notes', cols='35')
+          .separator
+            button#add-action
+          .action-item
+            .name Some one
+            .action HTML5 is really awesome! Did you check on that?
+          .separator  
+    script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js')
+    script.
+      window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\\/script>')
+    script(src='js/plugins.js')
+    script(src='js/main.js')
