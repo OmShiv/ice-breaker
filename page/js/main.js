@@ -33,7 +33,7 @@ var App = (function(w, d, n, $) {
         var msg = JSON.parse(message.data);
 
         switch(msg.type) {
-            case 'uuid' :
+        case 'uuid' :
             socket.id = msg.id;
             break;
 
@@ -102,7 +102,7 @@ var App = (function(w, d, n, $) {
     };
 
     peerCon.onaddstream = function(e) {
-        console.log('remote start video stream');
+        console.log('Remote has added Video stream ... may by by allowing getUserMedia request', e);
         setVideoSrc($overlayVideo[0], e.stream);
         $overlayVideo[0].play();
         $overlayVideo.removeClass('overlay');

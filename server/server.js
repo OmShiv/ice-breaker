@@ -18,7 +18,7 @@ app.get('/:base', function(req, res) {
     });
 });
 
-server = app.listen(3456);
+server = app.listen(80);
 
 io = ws.attach(server);
 
