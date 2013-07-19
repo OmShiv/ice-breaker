@@ -1,7 +1,8 @@
 
 var App = (function(w, d, n, $) {
 
-    var $header = $('#ice-header'),
+    var peerCon,
+        $header = $('#ice-header'),
         $main = $('#main'),
         $c2aDiv = $main.find('.c2a'),
         $c2aForm = $('#c2a-form'),
@@ -32,16 +33,16 @@ var App = (function(w, d, n, $) {
         var msg = JSON.parse(message.data);
 
         switch(msg.type) {
-            case 'assigned_id' :
+            case 'uuid' :
             socket.id = msg.id;
             break;
 
         case 'received_offer' : 
             console.log('received offer', msg.data);
-            pc.setRemoteDescription(new RTCSessionDescription(msg.data));
-            pc.createAnswer(function(description) {
+            peerCon.setRemoteDescription(new RTCSessionDescription(msg.data));
+            peerCon.createAnswer(function(description) {
                 console.log('sending answer');
-                pc.setLocalDescription(description); 
+                peerCon.setLocalDescription(description); 
                 socket.send(
                     JSON.stringify({
                         type: 'received_answer', 
@@ -54,7 +55,7 @@ var App = (function(w, d, n, $) {
         case 'received_answer' :
             console.log('received answer');
             if(!connected) {
-                pc.setRemoteDescription(new RTCSessionDescription(msg.data));
+                peerCon.setRemoteDescription(new RTCSessionDescription(msg.data));
                 connected = true;
             }
             break;
@@ -65,15 +66,14 @@ var App = (function(w, d, n, $) {
                 sdpMLineIndex: msg.data.label,
                 candidate: msg.data.candidate
             });
-            pc.addIceCandidate(candidate);
+            peerCon.addIceCandidate(candidate);
             break;
         }
     };
 
-    var pc,
+    var 
+        // the famous Google STUN server for signaling
         configuration = {"iceServers": [{"url": "stun:stun.l.google.com:19302"}]},
-        stream,
-
         connected = false,
         mediaConstraints = {
             'mandatory': {
@@ -84,9 +84,9 @@ var App = (function(w, d, n, $) {
 
     // For peer
     // Doesn't run in stable Mozilla
-    pc = new w.RTCPeerConnection(configuration);
+    peerCon = new w.RTCPeerConnection(configuration);
 
-    pc.onicecandidate = function(e) {
+    peerCon.onicecandidate = function(e) {
         if(e.candidate) {
             socket.send(
                 JSON.stringify({
@@ -101,7 +101,7 @@ var App = (function(w, d, n, $) {
         }
     };
 
-    pc.onaddstream = function(e) {
+    peerCon.onaddstream = function(e) {
         console.log('remote start video stream');
         setVideoSrc($overlayVideo[0], e.stream);
         $overlayVideo[0].play();
@@ -122,9 +122,9 @@ var App = (function(w, d, n, $) {
 
     function playMainVideo() {
 
-      // gets local video stream and renders to vid1
+        // gets local video stream and renders to vid1
         n.getMedia( constraints, function(localMediaStream) {
-            pc.addStream(localMediaStream);
+            peerCon.addStream(localMediaStream);
 
             setVideoSrc($mainVideo[0], localMediaStream);
 
@@ -133,14 +133,14 @@ var App = (function(w, d, n, $) {
 
             // initCall is set in views/index and is based on if there is another person in the room to connect to
             if(initCall)
-              start();
+                start();
         }, mainVideoError);
     }
 
     function start() {
       // this initializes the peer connection
-        pc.createOffer(function(description) {
-            pc.setLocalDescription(description);
+        peerCon.createOffer(function(description) {
+            peerCon.setLocalDescription(description);
             socket.send(
                 JSON.stringify({
                     type: 'received_offer',
@@ -157,8 +157,8 @@ var App = (function(w, d, n, $) {
             })
         );
 
-        pc.close();
-        pc = null;
+        peerCon.close();
+        peerCon = null;
 
         $mainVideo.removeClass('overlay');
         $overlayVideo.addClass('overlay');
