@@ -41,7 +41,7 @@ var App = (function(w, d, n, $) {
             console.log('Received offer', msg.data);
             peerCon.setRemoteDescription(new RTCSessionDescription(msg.data));
             peerCon.createAnswer(function(description) {
-                console.log('sending answer');
+                console.log('Answering');
                 peerCon.setLocalDescription(description); 
                 socket.send(
                     JSON.stringify({

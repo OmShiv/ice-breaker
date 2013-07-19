@@ -54,9 +54,9 @@ io.on('connection', function(socket) {
         msg = JSON.parse(data);
 
         switch (msg.type) {
-            case 'received_offer':
-            case 'received_candidate':
-            case 'received_answer':
+            case 'offered':
+            case 'candidate':
+            case 'answered':
                 _ref = io.clientsByGroup[socket.group];
                 results = [];
                 for (i = 0, length = _ref.length; i < length; i++) {
