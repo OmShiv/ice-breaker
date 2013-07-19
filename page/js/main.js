@@ -37,31 +37,31 @@ var App = (function(w, d, n, $) {
             socket.id = msg.id;
             break;
 
-        case 'received_offer' : 
-            console.log('received offer', msg.data);
+        case 'offered' : 
+            console.log('Received offer', msg.data);
             peerCon.setRemoteDescription(new RTCSessionDescription(msg.data));
             peerCon.createAnswer(function(description) {
                 console.log('sending answer');
                 peerCon.setLocalDescription(description); 
                 socket.send(
                     JSON.stringify({
-                        type: 'received_answer', 
+                        type: 'answered', 
                         data: description
                     })
                 );
             }, null, mediaConstraints);
             break;
 
-        case 'received_answer' :
-            console.log('received answer');
+        case 'answered' :
+            console.log('Received answer');
             if(!connected) {
                 peerCon.setRemoteDescription(new RTCSessionDescription(msg.data));
                 connected = true;
             }
             break;
 
-        case 'received_candidate' :
-            console.log('received candidate');
+        case 'candidate' :
+            console.log('Received ICE request');
             var candidate = new RTCIceCandidate({
                 sdpMLineIndex: msg.data.label,
                 candidate: msg.data.candidate
@@ -90,7 +90,7 @@ var App = (function(w, d, n, $) {
         if(e.candidate) {
             socket.send(
                 JSON.stringify({
-                    type: 'received_candidate',
+                    type: 'candidate',
                     data: {
                         label: e.candidate.sdpMLineIndex,
                         id: e.candidate.sdpMid,
@@ -143,7 +143,7 @@ var App = (function(w, d, n, $) {
             peerCon.setLocalDescription(description);
             socket.send(
                 JSON.stringify({
-                    type: 'received_offer',
+                    type: 'offered',
                     data: description
                 })
             );
