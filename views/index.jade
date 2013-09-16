@@ -1,5 +1,5 @@
 !!! 5
-html.no-js
+html.no-js.webrtc
   head
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
@@ -10,8 +10,8 @@ html.no-js
     link(rel='stylesheet', href='css/main.css')
     script(src='js/vendor/modernizr-2.6.2.min.js')
     script.
-      var room = "#{ params.room }";
-      var initCall = #{ room_count > 0 };
+      var group = "#{ params.group }";
+      var initCall = #{ groupCount > 0 };
   body
     #viewport
       header#ice-header
@@ -44,9 +44,10 @@ html.no-js
             div
               textarea#member-notes(placeholder='Call to action notes', cols='35')
           .separator
-            button#add-action
+            button#add-action.action-btn
+            button#clear-action.action-btn
           .action-item
-            .name Some one
+            .name Samuel Jackson
             .action HTML5 is really awesome! Did you check on that?
           .separator  
     script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js')

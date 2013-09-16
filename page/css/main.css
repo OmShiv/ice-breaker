@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto+Slab:400,700);
+
 /* ==========================================================================
    HTML5 Boilerplate styles - h5bp.com (generated via initializr.com)
    ========================================================================== */
@@ -11,6 +13,7 @@ textarea {
 }
 body, html {
     height: 100%;
+    font-family: "Roboto Slab", sans-serif;
 }
 body {
     font-size: 0.8em;
@@ -106,11 +109,12 @@ div, a, span, video, #ice-header {
     border-radius: 80px;
     margin-left: 10px;
 }
+
 .circles a:hover { border-color: rgba(55, 236, 142, 0.8); }
 .circles a:active { box-shadow: 0 0 10px rgba(75, 51, 51, 0.41) inset; }
 
 .circles a.speaker-1 { background: url(../img/people/speaker_01.png) 0 0 no-repeat; }
-.circles a.speaker-2 { background: url(../img/people/speaker_02.png) 0 0 no-repeat; }
+.circles a.speaker-2 { background: url(../img/people/speaker_02.jpg) 0 0 no-repeat; }
 .circles a.call-phone { background: url(../img/icons/call-phone.png) 0 0 no-repeat; }
 .circles a.share-screen { background: url(../img/icons/share-screen.png) 0 0 no-repeat; }
 .circles a.web-cam { background: url(../img/icons/web-cam.png) 0 0 no-repeat; }
@@ -146,11 +150,28 @@ video.overlay {
     top: 0;
     right: 0;
     color: #fff;
+    font-size: 1.2em;
     background-color: #72b1e1;
+    border-left: 1px solid #5298CE;
     position: absolute;
     right: -275px;
     z-index: 15;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
 }
+
+.c2a.highlight {
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    background-color: #45A4EE;
+}
+
+.c2a .item-holder { cursor: pointer; }
+.c2a .item-holder:hover, 
+.c2a .item-holder.do-not-remove { background: #299CE9; }
+.c2a .item-holder:hover .name,
+.c2a .item-holder.do-not-remove .name { color: #FACD1B; }
+
+.c2a .item-holder.do-not-remove { cursor: default; }
+
 
 .c2a form, .c2a .action-item { padding: 20px 20px 0; }
 #c2a-toggle, #hdr-toggle {
@@ -187,16 +208,16 @@ form > * {
     border: 1px solid #fff;
     margin-top: 30px;
 }
-#add-action {
+.action-btn {
     background: url(../img/icons/add-action.png) 0 0 no-repeat;
     border: 0;
     height: 49px;
     width: 49px;
     position: absolute;
     margin-top: -24px;
-    right: 20px;
+    right: 80px;
 }
-#add-action:active {
+.action-btn:active {
     box-shadow: 0 0 10px #888 inset;
     border-radius: 49px;
 }
@@ -206,6 +227,13 @@ form > * {
     color: #b42626; 
     font-weight: bold; 
     margin-bottom: 20px; 
+}
+
+#clear-action {
+    right: 20px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    transform: rotate(45deg);
 }
 
 /* ==========================================================================

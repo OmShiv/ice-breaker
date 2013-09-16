@@ -9,6 +9,7 @@ var App = (function(w, d, n, $) {
         $c2aToggle = $('#c2a-toggle'),
         $hdrToggle = $('#hdr-toggle'),
         actions = {},
+        msgCounter = 0,
         $mainVideo = $('#main-video'),
         $overlayVideo = $('#overlay-video');
         firstPlayed = false;
@@ -33,41 +34,47 @@ var App = (function(w, d, n, $) {
         var msg = JSON.parse(message.data);
 
         switch(msg.type) {
-        case 'uuid' :
-            socket.id = msg.id;
+            case 'uuid' :
+                socket.id = msg.id;
             break;
 
-        case 'offered' : 
-            console.log('Received offer', msg.data);
-            peerCon.setRemoteDescription(new RTCSessionDescription(msg.data));
-            peerCon.createAnswer(function(description) {
-                console.log('Answering');
-                peerCon.setLocalDescription(description); 
-                socket.send(
-                    JSON.stringify({
-                        type: 'answered', 
-                        data: description
-                    })
-                );
-            }, null, mediaConstraints);
-            break;
-
-        case 'answered' :
-            console.log('Received answer');
-            if(!connected) {
+            case 'offered' : 
+                console.log('Received offer', msg.data);
                 peerCon.setRemoteDescription(new RTCSessionDescription(msg.data));
-                connected = true;
-            }
-            break;
+                peerCon.createAnswer(function(description) {
+                    console.log('Answering');
+                    peerCon.setLocalDescription(description); 
+                    socket.send(
+                        JSON.stringify({
+                            type: 'answered', 
+                            data: description
+                        })
+                    );
+                }, null, mediaConstraints);
+                break;
 
-        case 'candidate' :
-            console.log('Received ICE request');
-            var candidate = new RTCIceCandidate({
-                sdpMLineIndex: msg.data.label,
-                candidate: msg.data.candidate
-            });
-            peerCon.addIceCandidate(candidate);
-            break;
+            case 'answered' :
+                console.log('Received answer');
+                if(!connected) {
+                    peerCon.setRemoteDescription(new RTCSessionDescription(msg.data));
+                    connected = true;
+                }
+                break;
+
+            case 'candidate' :
+                console.log('Received ICE request');
+                var candidate = new RTCIceCandidate({
+                    sdpMLineIndex: msg.data.label,
+                    candidate: msg.data.candidate
+                });
+                peerCon.addIceCandidate(candidate);
+                break;
+
+            case 'node-debug' :
+                console.log('===== Node Debug: =====');
+                console.log(msg.key, ' ==> ', msg.value);
+                console.log('== // Node Debug. =====');
+                break;
         }
     };
 
@@ -102,7 +109,7 @@ var App = (function(w, d, n, $) {
     };
 
     peerCon.onaddstream = function(e) {
-        console.log('Remote has added Video stream ... may by by allowing getUserMedia request', e);
+        console.log('remote start video stream');
         setVideoSrc($overlayVideo[0], e.stream);
         $overlayVideo[0].play();
         $overlayVideo.removeClass('overlay');
@@ -248,20 +255,39 @@ var App = (function(w, d, n, $) {
                     data.memberNotes = $('#member-notes').val()
                 }
                 _this.addAction( data );
-            })
+            });
+
+            $('#clear-action').on('click', function() {
+                $c2aDiv.find('.item-holder').remove();
+            });
 
         },
         addAction: function(data) {
             var tpl;
             if (!data.memberName || !data.memberNotes) return;
             
-            tpl = '<div class="action-item">'+
-            '<div class="name">' + data.memberName + '</div>' +
-            '<div class="action">' + data.memberNotes + '</div>' +
-            '</div>'+
-            '<div class="separator"></div>';
+            msgCounter ++;
 
-            $c2aDiv.append(tpl);
+            tpl = ''+
+            '<div class="item-holder">'+
+            '<div class="action-item">'+
+                '<div class="name">' + data.memberName + '</div>' +
+                '<div class="action">' + data.memberNotes + '</div>' +
+                '</div>'+
+            '<div class="separator"></div>'+
+            '</div>';
+            
+            $c2aDiv.append( 
+                $(tpl)
+                .on('click', function(){
+                    $(this).addClass('do-not-remove');
+                })
+                .delay(2000).fadeIn(1, function(){
+                    $(this).hasClass('do-not-remove') || $(this).remove();
+                    $c2aDiv.removeClass('highlight');
+                }) 
+            ).addClass('highlight');
+
         }
     }
 

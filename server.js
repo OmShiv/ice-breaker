@@ -6,15 +6,15 @@ ws = require('websocket.io');
 uuid = require('node-uuid');
 
 app.configure(function () {
-    app.use(express.static(__dirname + '/../page'));
+    app.use(express.static(__dirname + '/page'));
 });
 
-app.get('/:base', function(req, res) {
+app.get('/:group', function(req, res) { // 
     var _ref;
-    // res.sendfile('index.html');
+
     return res.render('index.jade', {
         params: req.query,
-        group_count: ((_ref = io.clientsByGroup[req.params.group]) != null ? _ref.length : void 0) || 0
+        groupCount: ((_ref = io.clientsByGroup[req.params.group]) != null ? _ref.length : void 0) || 0
     });
 });
 
@@ -46,6 +46,14 @@ io.on('connection', function(socket) {
         JSON.stringify({
             type: 'uuid',
             id: socket.id
+        })
+    );
+
+    socket.send(
+        JSON.stringify({
+            type: 'node-debug',
+            key: 'group',
+            value: group
         })
     );
 
