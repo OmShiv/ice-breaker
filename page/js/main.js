@@ -145,7 +145,7 @@ var App = (function(w, d, n, $) {
     }
 
     function start() {
-      // this initializes the peer connection
+        // this initializes the peer connection
         peerCon.createOffer(function(description) {
             peerCon.setLocalDescription(description);
             socket.send(
@@ -157,7 +157,7 @@ var App = (function(w, d, n, $) {
         }, null, mediaConstraints);
     }
 
-    function closePeer() {
+    function closePeer(windowUnloaded) {
         socket.send(
             JSON.stringify({
                 type: 'close'
@@ -168,7 +168,7 @@ var App = (function(w, d, n, $) {
         peerCon = null;
 
         $mainVideo.removeClass('overlay');
-        $overlayVideo.addClass('overlay');
+        if (!windowUnloaded) $overlayVideo.addClass('overlay');
         firstPlayed = false;
     };
 
@@ -177,7 +177,7 @@ var App = (function(w, d, n, $) {
     // };
 
     w.onbeforeunload = function() {
-        closePeer();
+        closePeer(true);
     }
 
     function setFullScreen(el) {
