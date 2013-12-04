@@ -1,9 +1,10 @@
-var app, express, io, server, uuid, ws;
+var app, express, io, server, uuid, ws, herokuPort;
 
 express = require('express');
 app = express();
 ws = require('websocket.io');
 uuid = require('node-uuid');
+herokuPort = process.env.PORT || 3000;
 
 app.configure(function () {
     app.use(express.static(__dirname + '/page'));
