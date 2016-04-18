@@ -1,10 +1,10 @@
-var app, express, io, server, uuid, ws, herokuPort;
+var app, express, io, server, uuid, ws, appPort;
 
 express = require('express');
 app = express();
 ws = require('websocket.io');
 uuid = require('node-uuid');
-herokuPort = process.env.PORT || 3000;
+appPort = process.env.PORT || 5555;
 
 app.configure(function () {
     app.use(express.static(__dirname + '/page'));
@@ -19,7 +19,7 @@ app.get('/:group', function(req, res) { //
     });
 });
 
-server = app.listen(80);
+server = app.listen(appPort);
 
 io = ws.attach(server);
 
