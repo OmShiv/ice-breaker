@@ -31,7 +31,7 @@
   "private": true,
   "main": "server.js",
   "scripts": {
-    "start": "node server.js 5555"
+    "start": "node server.js 3000"
   },
   "name": "webrtc-jsfoo",
   "subdomain": "omshiv"

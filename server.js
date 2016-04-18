@@ -4,22 +4,24 @@ express = require('express');
 app = express();
 ws = require('websocket.io');
 uuid = require('node-uuid');
-appPort = process.env.PORT || 5555;
+port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
+ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
 
 app.configure(function () {
     app.use(express.static(__dirname + '/page'));
 });
 
-app.get('/:group', function(req, res) { // 
-    var _ref;
+app.set('port', process.env.PORT || 3000);
 
+app.get('/:group', function(req, res) { //
+    var _ref;
     return res.render('index.jade', {
         params: req.query,
         groupCount: ((_ref = io.clientsByGroup[req.params.group]) != null ? _ref.length : void 0) || 0
     });
 });
 
-server = app.listen(appPort);
+server = app.listen(port, ip);
 
 io = ws.attach(server);
 
@@ -83,3 +85,5 @@ io.on('connection', function(socket) {
         }
     });
 });
+
+module.exports = app;
