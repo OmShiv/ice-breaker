@@ -22,7 +22,6 @@ app.get('/:group', function(req, res) { //
 });
 
 server = app.listen(port, ip);
-
 io = ws.attach(server);
 
 io.clientsById || (io.clientsById = {});
