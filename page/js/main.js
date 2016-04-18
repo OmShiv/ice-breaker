@@ -20,7 +20,7 @@ var App = (function(w, d, n, $) {
     }
 
     // Defining a common method by checking vendor prefixes
-    n.getMedia = ( 
+    n.getMedia = (
         n.getUserMedia ||       // default
         n.webkitGetUserMedia || // Chrome and Safari
         n.mozGetUserMedia ||    // Firefox
@@ -28,7 +28,7 @@ var App = (function(w, d, n, $) {
 
     w.RTCPeerConnection = w.webkitRTCPeerConnection || w.mozRTCPeerConnection;
 
-    var socket = new WebSocket('ws://' + window.location.host + window.location.pathname);
+    var socket = new WebSocket('wss://' + window.location.host + window.location.pathname);
 
     socket.onmessage = function(message) {
         var msg = JSON.parse(message.data);
@@ -38,15 +38,15 @@ var App = (function(w, d, n, $) {
                 socket.id = msg.id;
             break;
 
-            case 'offered' : 
+            case 'offered' :
                 console.log('Received offer', msg.data);
                 peerCon.setRemoteDescription(new RTCSessionDescription(msg.data));
                 peerCon.createAnswer(function(description) {
                     console.log('Answering');
-                    peerCon.setLocalDescription(description); 
+                    peerCon.setLocalDescription(description);
                     socket.send(
                         JSON.stringify({
-                            type: 'answered', 
+                            type: 'answered',
                             data: description
                         })
                     );
@@ -78,13 +78,13 @@ var App = (function(w, d, n, $) {
         }
     };
 
-    var 
+    var
         // the famous Google STUN server for signaling
         configuration = {"iceServers": [{"url": "stun:stun.l.google.com:19302"}]},
         connected = false,
         mediaConstraints = {
             'mandatory': {
-                'OfferToReceiveAudio':true, 
+                'OfferToReceiveAudio':true,
                 'OfferToReceiveVideo':true
             }
         };
@@ -119,7 +119,7 @@ var App = (function(w, d, n, $) {
     // Privates
 
     function setVideoSrc(el, s) {
-        if (n.mozGetUserMedia) { 
+        if (n.mozGetUserMedia) {
             el.mozSrcObject = s; // only for FF
         } else {
             var vendorURL = w.URL || w.webkitURL;
@@ -186,7 +186,7 @@ var App = (function(w, d, n, $) {
             el.mozRequestFullScreen ||
             el.mozRequestFullScreen ||
             el.webkitRequestFullScreen);
-        
+
         el.requestFullScreen();
     }
 
@@ -213,17 +213,17 @@ var App = (function(w, d, n, $) {
 
             $c2aToggle.on('click', function(e) {
                 e.preventDefault();
-                $c2aDiv.css('right', 
-                    $c2aDiv.css('right') == '-275px' ? 0 : '-275px' 
+                $c2aDiv.css('right',
+                    $c2aDiv.css('right') == '-275px' ? 0 : '-275px'
                 );
             });
 
             $hdrToggle.on('click', function(e) {
                 e.preventDefault();
-                $header.css('top', 
-                    $header.css('top') == '-127px' ? 0 : '-127px' 
+                $header.css('top',
+                    $header.css('top') == '-127px' ? 0 : '-127px'
                 );
-                $c2aToggle.css('top', 
+                $c2aToggle.css('top',
                     $header.css('top') == '0px' ? '18px' : '145px'
                 );
             });
@@ -249,7 +249,7 @@ var App = (function(w, d, n, $) {
             // C2A
             $('#add-action').on('click', function() {
                 var data = {};
-                if ( $('#member-name').val() !="" && 
+                if ( $('#member-name').val() !="" &&
                      $('#member-name').val() != "") {
                     data.memberName = $('#member-name').val()
                     data.memberNotes = $('#member-notes').val()
@@ -265,7 +265,7 @@ var App = (function(w, d, n, $) {
         addAction: function(data) {
             var tpl;
             if (!data.memberName || !data.memberNotes) return;
-            
+
             msgCounter ++;
 
             tpl = ''+
@@ -276,8 +276,8 @@ var App = (function(w, d, n, $) {
                 '</div>'+
             '<div class="separator"></div>'+
             '</div>';
-            
-            $c2aDiv.append( 
+
+            $c2aDiv.append(
                 $(tpl)
                 .on('click', function(){
                     $(this).addClass('do-not-remove');
@@ -285,7 +285,7 @@ var App = (function(w, d, n, $) {
                 .delay(2000).fadeIn(1, function(){
                     $(this).hasClass('do-not-remove') || $(this).remove();
                     $c2aDiv.removeClass('highlight');
-                }) 
+                })
             ).addClass('highlight');
 
         }
