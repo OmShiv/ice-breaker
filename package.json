@@ -24,12 +24,12 @@
     "express": "3.3.x",
     "jade": "0.33.0",
     "node-uuid": "1.4.0",
-    "websocket.io": "latest"
+    "websocket.io": "latest",
+    "ws": "^1.0.1"
   },
   "devDependencies": {},
   "bundleDependencies": [],
   "private": true,
-  "main": "server.js",
   "scripts": {
     "start": "node server.js 3000"
   },
